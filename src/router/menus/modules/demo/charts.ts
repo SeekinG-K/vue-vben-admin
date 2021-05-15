@@ -37,6 +37,10 @@ const menu: MenuModule = {
             path: 'pie',
             name: t('routes.demo.charts.pie'),
           },
+          {
+            path: 'simpleLine',
+            name: t('routes.demo.charts.simpleLine'),
+          },
         ],
       },
     ],

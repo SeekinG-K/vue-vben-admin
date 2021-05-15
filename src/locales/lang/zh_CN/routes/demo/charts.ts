@@ -6,4 +6,5 @@ export default {
   map: '地图',
   line: '折线图',
   pie: '饼图',
+  simpleLine: '简单的折线',
 };

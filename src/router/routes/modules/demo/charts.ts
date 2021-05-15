@@ -71,6 +71,14 @@ const charts: AppRouteModule = {
             title: t('routes.demo.charts.pie'),
           },
         },
+        {
+          path: 'simpleLine',
+          name: 'SimpleLine',
+          component: () => import('/@/views/demo/charts/SimpleLine.vue'),
+          meta: {
+            title: t('routes.demo.charts.simpleLine'),
+          },
+        },
       ],
     },
   ],
