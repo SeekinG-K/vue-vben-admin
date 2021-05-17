@@ -23,6 +23,7 @@ import {
   VisualMapComponent,
   TimelineComponent,
   CalendarComponent,
+  MarkPointComponent,
 } from 'echarts/components';
 
 import { SVGRenderer } from 'echarts/renderers';
@@ -48,6 +49,7 @@ echarts.use([
   VisualMapComponent,
   TimelineComponent,
   CalendarComponent,
+  MarkPointComponent,
 ]);
 
 export default echarts;

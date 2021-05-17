@@ -5,16 +5,6 @@
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, onMounted } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
-  import echarts from '/@/utils/lib/echarts';
-  // import { uploadApi } from '/@/api/sys/upload';
-  var date = [].fill(0);
-  var data = [].fill(0);
-  for (var i = 1; i < 100; i++) {
-    // const n:number = 1 * i;
-    date.push(i);
-    // data.push(Number(Math.round((Math.random() - 0.5) * 20 + data[i - 1])));
-    data.push(i);
-  }
   export default defineComponent({
     data() {
       return {
@@ -66,29 +56,15 @@
               saveAsImage: {},
             },
           },
-          legend: {
-            data: ['买入'],
-          },
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: date,
+            data: ['1', '2', '3', '4'],
           },
           yAxis: {
             type: 'value',
             boundaryGap: [0, '100%'],
           },
-          dataZoom: [
-            {
-              type: 'inside',
-              start: 0,
-              end: 10,
-            },
-            {
-              start: 0,
-              end: 10,
-            },
-          ],
           series: [
             {
               name: '模拟数据',
@@ -96,27 +72,12 @@
               symbol: 'none',
               sampling: 'lttb',
               itemStyle: {
-                color: 'red',
+                color: 'rgb(65, 105, 225)',
               },
               markPoint: {
-                data: [
-                  { type: 'max', name: '最大值' },
-                  { type: 'min', name: '最小值' },
-                ],
+                data: [{ type: 'max', name: '最大值', value: '买入' }],
               },
-              areaStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: 'rgb(255, 158, 68)',
-                  },
-                  {
-                    offset: 1,
-                    color: 'rgb(255, 70, 131)',
-                  },
-                ]),
-              },
-              data: data,
+              data: [20, 80, 60, 80],
             },
           ],
         });
