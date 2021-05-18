@@ -67,17 +67,19 @@
           },
           series: [
             {
-              name: '模拟数据',
+              name: '买入',
               type: 'line',
-              symbol: 'none',
+              symbol: 'roundRect',
               sampling: 'lttb',
               itemStyle: {
                 color: 'rgb(65, 105, 225)',
               },
               markPoint: {
                 data: [{ type: 'max', name: '最大值', value: '买入' }],
+                symbol: 'rect',
               },
               data: [20, 80, 60, 80],
+              animation: true,
             },
           ],
         });
