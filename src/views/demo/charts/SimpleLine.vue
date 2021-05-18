@@ -7,6 +7,7 @@
   import _ from 'lodash';
   import { useECharts } from '/@/hooks/web/useECharts';
   import type { WeatherInfo } from '/#/api/backstage';
+  import echarts from '/@/utils/lib/echarts';
   export default defineComponent({
     data() {
       return {
@@ -136,7 +137,7 @@
           },
           series: [
             {
-              name: '买入',
+              name: '兴全合宜混合(LOF)A',
               type: 'line',
               symbol: 'roundRect',
               sampling: 'lttb',
@@ -145,13 +146,64 @@
               },
               markPoint: {
                 data: [{ type: 'max', name: '最大值', value: '买入' }],
-                symbol: 'rect',
+                symbol: 'circle',
                 label: {
-                  fontSize: 10,
+                  show: true,
+                  fontSize: 0,
+                  color: 'yellow',
+                },
+                symbolSize: 10,
+                animation: true,
+                itemStyle: {
+                  color: 'red',
                 },
               },
-              data: [20, 80, 60, 80],
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: 'rgb(255,181,197)',
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(255, 255, 255)',
+                  },
+                ]),
+                opacity: 0.618,
+              },
+              data: [20, 80, 60, 80, 20, 15, 60],
               animation: true,
+              color: 'red',
+            },
+            {
+              name: '创业板指数',
+              type: 'line',
+              symbol: 'roundRect',
+              sampling: 'lttb',
+              itemStyle: {
+                color: 'rgb(65, 105, 225)',
+              },
+              lineStyle: {
+                color: 'rgb(176, 196, 222)',
+                type: 'dashed',
+              },
+              markPoint: {
+                data: [{ type: 'max', name: '最大值', value: '买入' }],
+                symbol: 'circle',
+                label: {
+                  show: true,
+                  fontSize: 0,
+                  color: 'yellow',
+                },
+                symbolSize: 10,
+                animation: true,
+                itemStyle: {
+                  color: 'red',
+                },
+              },
+              data: [10, 70, 40, 20, 10, 20, 80],
+              animation: true,
+              color: 'red',
             },
           ],
         });
