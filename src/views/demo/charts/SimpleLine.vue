@@ -146,7 +146,12 @@
               },
               markPoint: {
                 data: [{ type: 'max', name: '最大值', value: '买入' }],
-                symbol: 'circle',
+                symbol: (value: Array<Object> | number, params: Object): string => {
+                  debugger;
+                  console.log(value);
+                  console.log(params);
+                  return 'aa';
+                },
                 label: {
                   show: true,
                   fontSize: 0,
