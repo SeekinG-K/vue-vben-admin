@@ -1,4 +1,28 @@
 <template>
+  <div class="p-4">
+    <BasicTable @register="registerTable">
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              label: '删除',
+              icon: 'ic:outline-delete-outline',
+              onClick: handleDelete.bind(null, record),
+            },
+          ]"
+          :dropDownActions="[
+            {
+              label: '启用',
+              popConfirm: {
+                title: '是否启用？',
+                confirm: handleOpen.bind(null, record),
+              },
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+  </div>
   <div ref="chartRef" :style="{ height, width }"></div>
   <!-- <a-button type="primary" :loading="iconLoading" @click="getTestVueInfo"> 点击按钮 </a-button> -->
 </template>
@@ -9,7 +33,45 @@
   import type { WeatherInfo } from '/#/api/backstage';
   import echarts from '/@/utils/lib/echarts';
   import EchartsEnum from '/@/utils/lib/echartsConst';
+  import { BasicTable, useTable, BasicColumn, TableAction } from '/@/components/Table';
+  import { demoListApi } from '/@/api/demo/table';
+
+  const columns: BasicColumn[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 300,
+    },
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      width: 300,
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      width: 300,
+    },
+    {
+      title: '编号',
+      dataIndex: 'no',
+      width: 300,
+    },
+    {
+      title: '开始时间',
+      width: 300,
+      dataIndex: 'beginTime',
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endTime',
+      width: 300,
+    },
+  ];
+
   export default defineComponent({
+    components: { BasicTable, TableAction },
     data() {
       return {
         loading: false,
@@ -28,9 +90,6 @@
     },
     methods: {
       getTestVueInfo(): string {
-        // const a: any;
-        // const data = uploadApi(a,);
-        // console.log(data);
         console.log('你点击了按钮');
         const a1 = 'alex';
         return a1;
@@ -39,6 +98,19 @@
     setup() {
       const chartRef = ref<HTMLDivElement | null>(null);
       const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
+      const [registerTable] = useTable({
+        title: 'TableAction组件及固定列示例',
+        api: demoListApi,
+        columns: columns,
+        rowSelection: { type: 'radio' },
+        bordered: true,
+        actionColumn: {
+          width: 160,
+          title: 'Action',
+          dataIndex: 'action',
+          slots: { customRender: 'action' },
+        },
+      });
       const dataTable: Array<WeatherInfo> = [
         {
           datetime: '2020-12-01',
@@ -96,8 +168,13 @@
           console.log(a);
         });
       }
+      function handleDelete(record: Recordable) {
+        console.log('点击了删除', record);
+      }
+      function handleOpen(record: Recordable) {
+        console.log('点击了启用', record);
+      }
       onMounted(() => {
-        debugger;
         f1(dataTable);
         setOptions({
           title: {
@@ -140,10 +217,10 @@
             {
               type: 'line',
               symbol: (rawValue: WeatherInfo, params: Object): string => {
-                debugger;
                 console.log(rawValue);
                 console.log(params);
                 if (rawValue.qty) return EchartsEnum.SYMBOL_BUY_SVG;
+                return 'pin';
               },
               itemStyle: {
                 color: 'rgb(65, 105, 225)',
@@ -189,7 +266,12 @@
         });
       });
 
-      return { chartRef };
+      return {
+        chartRef,
+        handleDelete,
+        handleOpen,
+        registerTable,
+      };
     },
   });
 </script>
