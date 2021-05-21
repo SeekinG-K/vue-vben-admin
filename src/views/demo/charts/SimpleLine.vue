@@ -42,6 +42,7 @@
       dataIndex: 'id',
       fixed: 'left',
       width: 300,
+      sorter: (a: any, b: any) => a.id - b.id,
     },
     {
       title: '姓名',
@@ -102,11 +103,24 @@
         title: 'TableAction组件及固定列示例',
         api: demoListApi,
         columns: columns,
-        rowSelection: { type: 'radio' },
+        rowSelection: {
+          type: 'radio',
+          getCheckboxProps: () => {
+            return {
+              disabled: true,
+              indeterminate: true,
+            };
+          },
+        },
         bordered: true,
+        loading: false,
+        scroll: {
+          scrollToFirstRowOnChange: true,
+        },
         actionColumn: {
           width: 160,
           title: 'Action',
+          fixed: 'right',
           dataIndex: 'action',
           slots: { customRender: 'action' },
         },
