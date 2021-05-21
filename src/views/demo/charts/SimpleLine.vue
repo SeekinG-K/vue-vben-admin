@@ -21,10 +21,49 @@
           ]"
         />
       </template>
+      <template #editColumn="{ record }">
+        <span>
+          <a-button type="primary" :loading="iconLoading" @click="() => edit(record.key)">
+            选择 ${loading}
+          </a-button>
+          <a-button type="primary" :loading="iconLoading" @click="() => edit(record.key)">
+            编辑
+          </a-button>
+          <a-button type="primary" :loading="iconLoading" @click="() => edit(record.key)">
+            删除
+          </a-button>
+        </span>
+      </template>
     </BasicTable>
   </div>
   <div ref="chartRef" :style="{ height, width }"></div>
-  <!-- <a-button type="primary" :loading="iconLoading" @click="getTestVueInfo"> 点击按钮 </a-button> -->
+  <div>
+    <a-select
+      v-model="value"
+      mode="multiple"
+      style="@buttonselect;"
+      placeholder="select one country"
+      option-label-prop="label"
+    >
+      <a-select-option value="china" label="China">
+        <span role="img" aria-label="China"> 🇨🇳 </span>
+        China (中国)
+      </a-select-option>
+      <a-select-option value="usa" label="USA">
+        <span role="img" aria-label="USA"> 🇺🇸 </span>
+        USA (美国)
+      </a-select-option>
+      <a-select-option value="japan" label="Japan">
+        <span role="img" aria-label="Japan"> 🇯🇵 </span>
+        Japan (日本)
+      </a-select-option>
+      <a-select-option value="korea" label="Korea">
+        <span role="img" aria-label="Korea"> 🇰🇷 </span>
+        Korea (韩国)
+      </a-select-option>
+    </a-select>
+  </div>
+  <!--  -->
 </template>
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, onMounted } from 'vue';
@@ -69,6 +108,12 @@
       dataIndex: 'endTime',
       width: 300,
     },
+    {
+      title: '操作项',
+      dataIndex: 'operation',
+      width: 300,
+      slots: { customRender: 'editColumn' },
+    },
   ];
 
   export default defineComponent({
@@ -77,6 +122,7 @@
       return {
         loading: false,
         iconLoading: false,
+        value: ['china'],
       };
     },
     props: {
@@ -188,6 +234,16 @@
       function handleOpen(record: Recordable) {
         console.log('点击了启用', record);
       }
+      function edit(key: any): void {
+        console.log('你点击了');
+        console.log(key);
+      }
+      function save(key: any): void {
+        console.log(key);
+      }
+      function cancel(key: any): void {
+        console.log(key);
+      }
       onMounted(() => {
         f1(dataTable);
         setOptions({
@@ -242,11 +298,7 @@
               },
               markPoint: {
                 data: [{ type: 'max', name: '最大值' }],
-                symbol: (value: Array<Object> | number, params: Object): string => {
-                  console.log(value);
-                  console.log(params);
-                  return 'aa';
-                },
+                symbol: 'pin',
                 symbolOffset: [0, '-20%'],
                 label: {
                   show: true,
@@ -285,7 +337,15 @@
         handleDelete,
         handleOpen,
         registerTable,
+        edit,
+        save,
+        cancel,
       };
     },
   });
 </script>
+<style lang="less">
+  .buttonSelect {
+    width: '100%';
+  }
+</style>
