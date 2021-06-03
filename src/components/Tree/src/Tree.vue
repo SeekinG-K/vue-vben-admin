@@ -11,6 +11,7 @@
     toRaw,
     watch,
     CSSProperties,
+    onMounted,
   } from 'vue';
   import { Tree, Empty } from 'ant-design-vue';
   import { TreeIcon } from './TreeIcon';
@@ -23,11 +24,14 @@
   import { filter } from '/@/utils/helper/treeHelper';
 
   import { useTree } from './useTree';
-  import { useContextMenu, ContextMenuItem } from '/@/hooks/web/useContextMenu';
+  import { useContextMenu } from '/@/hooks/web/useContextMenu';
   import { useExpose } from '/@/hooks/core/useExpose';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import { basicProps } from './props';
+  import { CreateContextOptions } from '/@/components/ContextMenu';
+
+  import { CheckEvent } from './types';
 
   interface State {
     expandedKeys: Keys;
@@ -88,12 +92,11 @@
             state.selectedKeys = v;
             emit('update:selectedKeys', v);
           },
-          onCheck: (v: CheckKeys) => {
+          onCheck: (v: CheckKeys, e: CheckEvent) => {
             state.checkedKeys = v;
             const rawVal = toRaw(v);
-            emit('change', rawVal);
-            emit('check', rawVal);
             emit('update:value', rawVal);
+            emit('check', rawVal, e);
           },
           onRightClick: handleRightClick,
         };
@@ -128,18 +131,20 @@
 
       async function handleRightClick({ event, node }: Recordable) {
         const { rightMenuList: menuList = [], beforeRightClick } = props;
-        let rightMenuList: ContextMenuItem[] = [];
+        let contextMenuOptions: CreateContextOptions = { event, items: [] };
 
         if (beforeRightClick && isFunction(beforeRightClick)) {
-          rightMenuList = await beforeRightClick(node);
+          let result = await beforeRightClick(node, event);
+          if (Array.isArray(result)) {
+            contextMenuOptions.items = result;
+          } else {
+            Object.assign(contextMenuOptions, result);
+          }
         } else {
-          rightMenuList = menuList;
+          contextMenuOptions.items = menuList;
         }
-        if (!rightMenuList.length) return;
-        createContextMenu({
-          event,
-          items: rightMenuList,
-        });
+        if (!contextMenuOptions.items?.length) return;
+        createContextMenu(contextMenuOptions);
       }
 
       function setExpandedKeys(keys: Keys) {
@@ -212,6 +217,15 @@
         treeDataRef.value = props.treeData as TreeItem[];
       });
 
+      onMounted(() => {
+        const level = parseInt(props.defaultExpandLevel);
+        if (level > 0) {
+          state.expandedKeys = filterByLevel(level);
+        } else if (props.defaultExpandAll) {
+          expandAll(true);
+        }
+      });
+
       watchEffect(() => {
         state.expandedKeys = props.expandedKeys;
       });
@@ -228,6 +242,15 @@
         () => props.value,
         () => {
           state.checkedKeys = toRaw(props.value || []);
+        }
+      );
+
+      watch(
+        () => state.checkedKeys,
+        () => {
+          const v = toRaw(state.checkedKeys);
+          emit('update:value', v);
+          emit('change', v);
         }
       );
 

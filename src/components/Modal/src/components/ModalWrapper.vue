@@ -65,7 +65,7 @@
           return {
             minHeight: `${props.minHeight}px`,
             // padding 28
-            height: `${unref(realHeightRef)}px`,
+            maxHeight: `${unref(realHeightRef)}px`,
           };
         }
       );

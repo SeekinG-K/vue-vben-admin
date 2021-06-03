@@ -28,9 +28,9 @@
       <div :class="`${prefixCls}-entry`" v-show="!showDate">
         <div :class="`${prefixCls}-entry-content`">
           <div :class="`${prefixCls}-entry__header enter-x`">
-            <img :src="headerImg" :class="`${prefixCls}-entry__header-img`" />
+            <img :src="userinfo.avatar || headerImg" :class="`${prefixCls}-entry__header-img`" />
             <p :class="`${prefixCls}-entry__header-name`">
-              {{ realName }}
+              {{ userinfo.realName }}
             </p>
           </div>
           <InputPassword
@@ -108,9 +108,8 @@
 
       const { t } = useI18n();
 
-      const realName = computed(() => {
-        const { realName } = userStore.getUserInfo || {};
-        return realName;
+      const userinfo = computed(() => {
+        return userStore.getUserInfo || {};
       });
 
       /**
@@ -141,7 +140,7 @@
 
       return {
         goLogin,
-        realName,
+        userinfo,
         unLock,
         errMsg,
         loading,

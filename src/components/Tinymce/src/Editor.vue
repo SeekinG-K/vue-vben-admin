@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts">
+  import type { RawEditorSettings } from 'tinymce';
   import tinymce from 'tinymce/tinymce';
   import 'tinymce/themes/silver';
 
@@ -66,10 +67,12 @@
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { isNumber } from '/@/utils/is';
+  import { useLocale } from '/@/locales/useLocale';
+  import { useAppStore } from '/@/store/modules/app';
 
   const tinymceProps = {
     options: {
-      type: Object as PropType<any>,
+      type: Object as PropType<Partial<RawEditorSettings>>,
       default: {},
     },
     value: {
@@ -118,6 +121,8 @@
 
       const { prefixCls } = useDesign('tinymce-container');
 
+      const appStore = useAppStore();
+
       const tinymceContent = computed(() => props.modelValue);
 
       const containerWidth = computed(() => {
@@ -128,31 +133,44 @@
         return width;
       });
 
-      const initOptions = computed(() => {
-        const { height, options, toolbar, plugins } = props;
-        const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
-        return {
-          selector: `#${unref(tinymceId)}`,
-          height,
-          toolbar,
-          menubar: 'file edit insert view format table',
-          plugins,
-          language_url: publicPath + 'resource/tinymce/langs/zh_CN.js',
-          language: 'zh_CN',
-          branding: false,
-          default_link_target: '_blank',
-          link_title: false,
-          object_resizing: false,
-          skin: 'oxide',
-          skin_url: publicPath + 'resource/tinymce/skins/ui/oxide',
-          content_css: publicPath + 'resource/tinymce/skins/ui/oxide/content.min.css',
-          ...options,
-          setup: (editor: any) => {
-            editorRef.value = editor;
-            editor.on('init', (e: Event) => initSetup(e));
-          },
-        };
+      const skinName = computed(() => {
+        return appStore.getDarkMode === 'light' ? 'oxide' : 'oxide-dark';
       });
+
+      const langName = computed(() => {
+        const lang = useLocale().getLocale.value;
+        return ['zh_CN', 'en'].includes(lang) ? lang : 'zh_CN';
+      });
+
+      const initOptions = computed(
+        (): RawEditorSettings => {
+          const { height, options, toolbar, plugins } = props;
+          const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
+          return {
+            selector: `#${unref(tinymceId)}`,
+            height,
+            toolbar,
+            menubar: 'file edit insert view format table',
+            plugins,
+            language_url: publicPath + 'resource/tinymce/langs/' + langName.value + '.js',
+            language: langName.value,
+            branding: false,
+            default_link_target: '_blank',
+            link_title: false,
+            object_resizing: false,
+            auto_focus: true,
+            skin: skinName.value,
+            skin_url: publicPath + 'resource/tinymce/skins/ui/' + skinName.value,
+            content_css:
+              publicPath + 'resource/tinymce/skins/ui/' + skinName.value + '/content.min.css',
+            ...options,
+            setup: (editor) => {
+              editorRef.value = editor;
+              editor.on('init', (e) => initSetup(e));
+            },
+          };
+        }
+      );
 
       watch(
         () => attrs.disabled,
@@ -196,7 +214,7 @@
         tinymce.init(unref(initOptions));
       }
 
-      function initSetup(e: Event) {
+      function initSetup(e) {
         const editor = unref(editorRef);
         if (!editor) {
           return;

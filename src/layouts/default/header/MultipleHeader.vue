@@ -116,7 +116,7 @@
     flex: 0 0 auto;
 
     &--dark {
-      margin-left: 0;
+      margin-left: -1px;
     }
 
     &--fixed {

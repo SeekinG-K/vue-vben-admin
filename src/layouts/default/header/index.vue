@@ -120,7 +120,6 @@
 
       const {
         getHeaderTheme,
-        getUseLockPage,
         getShowFullScreen,
         getShowNotice,
         getShowContent,
@@ -189,7 +188,6 @@
         getShowLocalePicker,
         getShowFullScreen,
         getShowNotice,
-        getUseLockPage,
         getUseErrorHandle,
         getLogoWidth,
         getIsMixSidebar,
