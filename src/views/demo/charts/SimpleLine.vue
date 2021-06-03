@@ -118,13 +118,6 @@
 
   export default defineComponent({
     components: { BasicTable, TableAction },
-    data() {
-      return {
-        loading: false,
-        iconLoading: false,
-        value: ['china'],
-      };
-    },
     props: {
       width: {
         type: String as PropType<string>,
@@ -135,14 +128,13 @@
         default: 'calc(100vh - 78px)',
       },
     },
-    methods: {
-      getTestVueInfo(): string {
-        console.log('你点击了按钮');
-        const a1 = 'alex';
-        return a1;
-      },
-    },
     setup() {
+      const focus = () => {
+        console.log('focus');
+      };
+      const handleChange = (value: string) => {
+        console.log(`selected ${value}`);
+      };
       const chartRef = ref<HTMLDivElement | null>(null);
       const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
       const [registerTable] = useTable({
@@ -340,7 +332,23 @@
         edit,
         save,
         cancel,
+        focus,
+        handleChange,
       };
+    },
+    data() {
+      return {
+        loading: false,
+        iconLoading: false,
+        value: ['china'],
+      };
+    },
+    methods: {
+      getTestVueInfo(): string {
+        console.log('你点击了按钮');
+        const a1 = 'alex';
+        return a1;
+      },
     },
   });
 </script>
