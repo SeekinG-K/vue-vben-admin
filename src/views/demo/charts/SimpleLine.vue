@@ -1,5 +1,19 @@
 <template>
   <div class="p-4">
+    <div>
+      <Select
+        :class="buttonSelectClass"
+        v-model:value="value1"
+        @focus="focus"
+        ref="select"
+        @change="handleChange"
+      >
+        <a-select-option value="jack">Jack</a-select-option>
+        <a-select-option value="lucy">Lucy</a-select-option>
+        <a-select-option value="disabled" disabled>Disabled</a-select-option>
+        <a-select-option value="Yiminghe">yiminghe</a-select-option>
+      </Select>
+    </div>
     <BasicTable @register="registerTable">
       <template #action="{ record }">
         <TableAction
@@ -73,6 +87,7 @@
   import echarts from '/@/utils/lib/echarts';
   import EchartsEnum from '/@/utils/lib/echartsConst';
   import { BasicTable, useTable, BasicColumn, TableAction } from '/@/components/Table';
+  import { Select } from 'ant-design-vue';
   import { demoListApi } from '/@/api/demo/table';
 
   const columns: BasicColumn[] = [
@@ -117,7 +132,7 @@
   ];
 
   export default defineComponent({
-    components: { BasicTable, TableAction },
+    components: { BasicTable, TableAction, Select },
     props: {
       width: {
         type: String as PropType<string>,
@@ -334,6 +349,10 @@
         cancel,
         focus,
         handleChange,
+        value1: ref('lucy'),
+        value2: ref('lucy'),
+        value3: ref('lucy'),
+        buttonSelectClass: 'buttonSelect',
       };
     },
     data() {
@@ -354,6 +373,6 @@
 </script>
 <style lang="less">
   .buttonSelect {
-    width: '100%';
+    width: 120px;
   }
 </style>
