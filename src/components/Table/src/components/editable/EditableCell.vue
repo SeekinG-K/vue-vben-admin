@@ -132,16 +132,14 @@
         return option?.label ?? value;
       });
 
-      const getWrapperStyle = computed(
-        (): CSSProperties => {
-          if (unref(getIsCheckComp) || unref(getRowEditable)) {
-            return {};
-          }
-          return {
-            width: 'calc(100% - 48px)',
-          };
+      const getWrapperStyle = computed((): CSSProperties => {
+        if (unref(getIsCheckComp) || unref(getRowEditable)) {
+          return {};
         }
-      );
+        return {
+          width: 'calc(100% - 48px)',
+        };
+      });
 
       const getWrapperClass = computed(() => {
         const { align = 'center' } = props.column;

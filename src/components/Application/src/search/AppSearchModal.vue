@@ -93,14 +93,8 @@
       const { getIsMobile } = useAppInject();
       const inputRef = ref<Nullable<HTMLElement>>(null);
 
-      const {
-        handleSearch,
-        searchResult,
-        keyword,
-        activeIndex,
-        handleEnter,
-        handleMouseenter,
-      } = useMenuSearch(refs, scrollWrap, emit);
+      const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } =
+        useMenuSearch(refs, scrollWrap, emit);
 
       const getIsNotData = computed(() => {
         return !keyword || unref(searchResult).length === 0;

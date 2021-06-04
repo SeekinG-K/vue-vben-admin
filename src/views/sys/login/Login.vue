@@ -32,7 +32,25 @@
         <div class="h-full xl:h-auto flex py-5 xl:py-0 xl:my-0 w-full xl:w-6/12">
           <div
             :class="`${prefixCls}-form`"
-            class="my-auto mx-auto xl:ml-20 xl:bg-transparent px-5 py-8 sm:px-8 xl:p-4 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto enter-x relative"
+            class="
+              my-auto
+              mx-auto
+              xl:ml-20
+              xl:bg-transparent
+              px-5
+              py-8
+              sm:px-8
+              xl:p-4
+              rounded-md
+              shadow-md
+              xl:shadow-none
+              w-full
+              sm:w-3/4
+              lg:w-2/4
+              xl:w-auto
+              enter-x
+              relative
+            "
           >
             <LoginForm />
             <ForgetPasswordForm />

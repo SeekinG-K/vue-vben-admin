@@ -99,16 +99,14 @@
         return actionColOpt;
       });
 
-      const getResetBtnOptions = computed(
-        (): ButtonOptions => {
-          return Object.assign(
-            {
-              text: t('common.resetText'),
-            },
-            props.resetButtonOptions
-          );
-        }
-      );
+      const getResetBtnOptions = computed((): ButtonOptions => {
+        return Object.assign(
+          {
+            text: t('common.resetText'),
+          },
+          props.resetButtonOptions
+        );
+      });
 
       const getSubmitBtnOptions = computed(() => {
         return Object.assign(

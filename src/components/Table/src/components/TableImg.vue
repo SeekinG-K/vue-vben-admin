@@ -28,13 +28,11 @@
       size: propTypes.number.def(40),
     },
     setup(props) {
-      const getWrapStyle = computed(
-        (): CSSProperties => {
-          const { size } = props;
-          const s = `${size}px`;
-          return { height: s, width: s };
-        }
-      );
+      const getWrapStyle = computed((): CSSProperties => {
+        const { size } = props;
+        const s = `${size}px`;
+        return { height: s, width: s };
+      });
 
       const { prefixCls } = useDesign('basic-table-img');
       return { prefixCls, getWrapStyle };

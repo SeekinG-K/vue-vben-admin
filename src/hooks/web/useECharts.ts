@@ -23,17 +23,15 @@ export function useECharts(
 
   resizeFn = useDebounceFn(resize, 200);
 
-  const getOptions = computed(
-    (): EChartsOption => {
-      if (getDarkMode.value !== 'dark') {
-        return cacheOptions.value;
-      }
-      return {
-        backgroundColor: 'transparent',
-        ...cacheOptions.value,
-      };
+  const getOptions = computed((): EChartsOption => {
+    if (getDarkMode.value !== 'dark') {
+      return cacheOptions.value;
     }
-  );
+    return {
+      backgroundColor: 'transparent',
+      ...cacheOptions.value,
+    };
+  });
 
   function initCharts(t = theme) {
     const el = unref(elRef);

@@ -89,11 +89,9 @@
       const { prefixCls } = useDesign('basic-form');
 
       // Get the basic configuration of the form
-      const getProps = computed(
-        (): FormProps => {
-          return { ...props, ...unref(propsRef) } as FormProps;
-        }
-      );
+      const getProps = computed((): FormProps => {
+        return { ...props, ...unref(propsRef) } as FormProps;
+      });
 
       const getFormClass = computed(() => {
         return [
