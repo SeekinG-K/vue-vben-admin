@@ -1,18 +1,7 @@
 <template>
   <div class="p-4">
     <div>
-      <Select
-        :class="buttonSelectClass"
-        v-model:value="value1"
-        @focus="focus"
-        ref="select"
-        @change="handleChange"
-      >
-        <a-select-option value="jack">Jack</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="disabled" disabled>Disabled</a-select-option>
-        <a-select-option value="Yiminghe">yiminghe</a-select-option>
-      </Select>
+      <Select :class="buttonSelectClass" />
     </div>
     <BasicTable @register="registerTable">
       <template #action="{ record }">
@@ -51,33 +40,6 @@
     </BasicTable>
   </div>
   <div ref="chartRef" :style="{ height, width }"></div>
-  <div>
-    <a-select
-      v-model="value"
-      mode="multiple"
-      style="@buttonselect;"
-      placeholder="select one country"
-      option-label-prop="label"
-    >
-      <a-select-option value="china" label="China">
-        <span role="img" aria-label="China"> 🇨🇳 </span>
-        China (中国)
-      </a-select-option>
-      <a-select-option value="usa" label="USA">
-        <span role="img" aria-label="USA"> 🇺🇸 </span>
-        USA (美国)
-      </a-select-option>
-      <a-select-option value="japan" label="Japan">
-        <span role="img" aria-label="Japan"> 🇯🇵 </span>
-        Japan (日本)
-      </a-select-option>
-      <a-select-option value="korea" label="Korea">
-        <span role="img" aria-label="Korea"> 🇰🇷 </span>
-        Korea (韩国)
-      </a-select-option>
-    </a-select>
-  </div>
-  <!--  -->
 </template>
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, onMounted } from 'vue';
@@ -87,7 +49,7 @@
   import echarts from '/@/utils/lib/echarts';
   import EchartsEnum from '/@/utils/lib/echartsConst';
   import { BasicTable, useTable, BasicColumn, TableAction } from '/@/components/Table';
-  import { Select } from 'ant-design-vue';
+  import { Select } from '/@/components/Select';
   import { demoListApi } from '/@/api/demo/table';
 
   const columns: BasicColumn[] = [
@@ -251,6 +213,9 @@
       function cancel(key: any): void {
         console.log(key);
       }
+      function handleSelectOption(): void {
+        console.log('select option');
+      }
       onMounted(() => {
         f1(dataTable);
         setOptions({
@@ -353,6 +318,7 @@
         value2: ref('lucy'),
         value3: ref('lucy'),
         buttonSelectClass: 'buttonSelect',
+        handleSelectOption,
       };
     },
     data() {
